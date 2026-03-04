@@ -1,14 +1,25 @@
 platform :android do
 
-  desc "Build Internal AAB (No Upload)"
+  desc "Build AAB and APK (Internal CI Build)"
   lane :build_internal do
 
+    gradle(
+      task: "clean"
+    )
+
+    # Build AAB
     gradle(
       task: "bundle",
       build_type: "Release"
     )
 
-    puts "Build successful. AAB generated."
+    # Build APK (for direct install)
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    puts "Build successful. AAB and APK generated."
   end
 
 end

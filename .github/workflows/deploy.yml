@@ -19,9 +19,10 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1
+          ruby-version: 3.2   # Upgrade (fastlane warning fix)
 
-      - run: gem install fastlane
+      - name: Install Fastlane
+        run: gem install fastlane
 
       - name: Grant Gradle Permission
         run: chmod +x gradlew
@@ -32,5 +33,11 @@ jobs:
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: app-release-aab
           path: app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
