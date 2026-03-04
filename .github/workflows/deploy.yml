@@ -3,7 +3,7 @@ name: Test Android CI
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
