@@ -19,7 +19,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2   # Upgrade (fastlane warning fix)
+          ruby-version: 3.2
 
       - name: Install Fastlane
         run: gem install fastlane
@@ -27,17 +27,35 @@ jobs:
       - name: Grant Gradle Permission
         run: chmod +x gradlew
 
-      - name: Run Fastlane Build
+      - name: Run Fastlane Build (Creates AAB)
         run: fastlane android build_internal
 
+      # ✅ Download bundletool
+      - name: Download bundletool
+        run: |
+          curl -L -o bundletool.jar \
+          https://github.com/google/bundletool/releases/download/1.15.6/bundletool-all-1.15.6.jar
+
+      # ✅ Convert AAB → Universal APK
+      - name: Convert AAB to Universal APK
+        run: |
+          java -jar bundletool.jar build-apks \
+            --bundle=app/build/outputs/bundle/release/app-release.aab \
+            --output=app.apks \
+            --mode=universal
+
+          unzip app.apks -d apks
+
+      # ✅ Upload AAB
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
           path: app/build/outputs/bundle/release/app-release.aab
 
-      - name: Upload APK Artifact
+      # ✅ Upload Universal APK
+      - name: Upload Universal APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: universal-apk
+          path: apks/universal.apk
