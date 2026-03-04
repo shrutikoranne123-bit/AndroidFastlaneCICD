@@ -2,7 +2,6 @@ platform :android do
 
   desc "Build Internal AAB (No Upload)"
   lane :build_internal do
-    increment_version_code
 
     gradle(
       task: "bundle",
