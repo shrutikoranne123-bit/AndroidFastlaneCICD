@@ -1,13 +1,14 @@
 platform :android do
-
-  desc "Build signed AAB and APK"
+  desc "Build Debug APK"
   lane :build_internal do
+    gradle(
+      task: "clean"
+    )
 
-    gradle(task: "clean")
-    gradle(task: "bundleRelease")
-    gradle(task: "assembleRelease")
+    gradle(
+      task: "assembleDebug"
+    )
 
-    puts "✅ Build successful. Signed AAB and APK generated."
+    puts "✅ Debug APK generated."
   end
-
 end
