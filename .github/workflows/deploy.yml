@@ -29,7 +29,7 @@ jobs:
       # ✅ Decode Keystore
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > my-release-key.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > C:\Projects\GCP\AndroidFastlaneCICD\my-release-key.jks
 
       - name: Grant Gradle Permission
         run: chmod +x gradlew
