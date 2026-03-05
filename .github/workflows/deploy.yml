@@ -24,11 +24,22 @@ jobs:
       - name: Install Fastlane
         run: gem install fastlane
 
+      # ✅ Decode Keystore
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > my-release-key.jks
+
       - name: Grant Gradle Permission
         run: chmod +x gradlew
 
+      # ✅ Run Fastlane with Signing Secrets
       - name: Run Fastlane Build (Creates AAB)
-        run: fastlane android build_internal
+        run: bundle exec fastlane android build_internal
+        env:
+          KEYSTORE_PATH: my-release-key.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       # ✅ Download bundletool
       - name: Download bundletool
