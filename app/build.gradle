@@ -16,8 +16,6 @@ android {
         applicationId "dev.shreyaspatil.firebase.app.distribution.demo"
         minSdk 21
         targetSdk 33
-        versionCode 10
-        versionName "1.5"
     }
 
     signingConfigs {
