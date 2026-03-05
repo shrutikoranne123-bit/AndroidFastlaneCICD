@@ -1,35 +1,11 @@
 platform :android do
 
-  desc "Build signed AAB and APK (Internal CI Build)"
+  desc "Build signed AAB and APK"
   lane :build_internal do
 
-    gradle(
-      task: "clean"
-    )
-
-    # Build SIGNED AAB
-    gradle(
-      task: "bundle",
-      build_type: "Release",
-      properties: {
-        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
-        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
-      }
-    )
-
-    # Build SIGNED APK
-    gradle(
-      task: "assemble",
-      build_type: "Release",
-      properties: {
-        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
-        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
-      }
-    )
+    gradle(task: "clean")
+    gradle(task: "bundleRelease")
+    gradle(task: "assembleRelease")
 
     puts "✅ Build successful. Signed AAB and APK generated."
   end
